@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  redis:
+    image: "redis:alpine"
+    entrypoint: redis-server --appendonly yes
+
+  proxy_service:
+    env_file:
+      - .env
+    ports:
+      - "9999:1329"
+    volumes:
+      - ./start.sh:/start.sh
+      - ./list.txt:/proxies_list.txt
+    build:
+      context: .
+    image: proxy_img
+    command: [ "sh", "start.sh" ]
+    depends_on:
+      - redis
+
+networks:
+  local:
+    external:
+      name: local
