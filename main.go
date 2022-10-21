@@ -58,6 +58,12 @@ func main() {
 						Usage:   "interval ( in sec) for check blocked proxy",
 					},
 					&cli.IntFlag{
+						Name:    "LockedTime",
+						Aliases: []string{"lt"},
+						Value:   60,
+						Usage:   "lock time interval ( in sec) for safety to fetch resource",
+					},
+					&cli.IntFlag{
 						Name:    "CheckTime",
 						Aliases: []string{"ct"},
 						Value:   10,
@@ -80,7 +86,7 @@ func main() {
 					redisHost := c.String("host")
 					CheckBlockedTime := c.Int("CheckBlockedTime")
 					CheckTime := c.Int("CheckTime")
-					BlockedTime := c.Int("BlockedTime")
+					LockedTime := c.Int("LockedTime")
 					ConcurrentCheck := c.Int("ConcurrentCheck")
 					Port := c.Int("port")
 					Prefix := c.String("prefix")
@@ -88,7 +94,7 @@ func main() {
 
 					color.Yellow(
 						fmt.Sprintf(`Domain: %s redis: %s, CheckBlockedTime: %d, CheckTime: %d, BlockedTime: %d, ConcurrentCheck: %d, Prefix: %s, `,
-							Domain, redisHost, CheckBlockedTime, CheckTime, BlockedTime,
+							Domain, redisHost, CheckBlockedTime, CheckTime, LockedTime,
 							ConcurrentCheck, Prefix,
 						),
 					)
@@ -97,7 +103,7 @@ func main() {
 						RedisHost:        redisHost,
 						CheckBlockedTime: CheckBlockedTime,
 						CheckTime:        CheckTime,
-						BlockedTime:      BlockedTime,
+						BlockedTime:      LockedTime,
 						ConcurrentCheck:  ConcurrentCheck,
 						Port:             Port,
 						CheckHosts:       []string{Domain},
